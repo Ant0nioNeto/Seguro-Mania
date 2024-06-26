@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEGURO MANIA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        h3{
+            text-align: center;
+            width: 100%;
+        }
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            transition: border 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #555;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #231270;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #231270;
+        }
+        .options, .policies {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .option, .policy {
+            margin: 10px;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            
+            cursor: pointer;
+            width: 250px;
+            text-align: center;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        .option:hover, .policy:hover {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+        #rulesModal, #initialModal, #resultModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+            transition: opacity 0.3s;
+        }
+        #rulesModalContent, #initialModalContent, #resultModalContent {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .logo{
+            position: absolute;
+            z-index: -1;
+            width: 180px;
+            left: 10px;
+            top: -60px;
+        }
+        .insta{
+            position: absolute;
+            left: 500px;
+            bottom: auto;
+            
+        }
+
+    </style>
+</head>
+<body>
+     <div class="container">
+        <body 
+            style="
+            background-color: #c8dde2;
+            color: #044051
+            "
+        >
+    </body>
+    <img class="logo" src="/WhatsApp Image 2024-06-25 at 15.21.00.png" alt="logo">
+        <h1>Bem-vindo ao Seguro Mania!</h1>
+        <div>
+            <label for="nameInput">Por favor, insira seu nome:</label>
+            <input type="text" id="nameInput">
+            <button onclick="showRules()">Enviar</button><br><br><br>
+            <button onclick="openRulesModal()">Ver Regras!</button>
+        </div>
+        <div id="policies" class="policies" style="display: none;"></div>
+    </div>
+
+    <div id="rulesModal">
+        <div id="rulesModalContent">
+            <span class="close" onclick="closeRulesModal()">&times;</span>
+            <h2>Regras do Jogo</h2>
+            <p>Olá! Você pode escolher entre três tipos de seguros: carro, casa e celular. Clique em uma das opções para ver as apólices disponíveis.</p>
+        </div>
+    </div>
+
+    <div id="initialModal">
+        <div id="initialModalContent">
+            <span class="close" onclick="closeInitialModal()">&times;</span>
+            <p>Um acidente aconteceu! Ainda bem que você está protegido. Vamos ver os detalhes.</p>
+            <button onclick="showResult()">Ver Detalhes</button>
+        </div>
+    </div>
+
+    <div id="resultModal">
+        <div id="resultModalContent">
+            <span class="close" onclick="closeResultModal()">&times;</span>
+            <p id="resultText"></p>
+        </div>
+    </div>
+
+    <script>
+        let selectedType, selectedPolicy, randomAccident;
+
+        function showRules() {
+            var name = document.getElementById('nameInput').value;
+            if (name) {
+                document.getElementById('policies').style.display = 'flex';
+                // Mostrar as opções de seguro
+                showOptions();
+                // Limpar o campo de entrada
+                document.getElementById('nameInput').value = '';
+            } else {
+                alert('Por favor, insira seu nome.');
+            }
+        }
+
+        function openRulesModal() {
+            document.getElementById('rulesModal').style.display = 'block';
+        }
+
+        function closeRulesModal() {
+            document.getElementById('rulesModal').style.display = 'none';
+        }
+        function showOptions() {
+            document.getElementById('policies').innerHTML = `
+            <h3> Escolha uma opção de seguro:</h3><br>
+                <div class="option" onclick="showPolicies('carro')">
+                    <img src="/carro.png" style="width:50%; height:auto;"/>
+                </div>
+                <div class="option" onclick="showPolicies('casa')">
+                    <img src="/casa-nova.png" style="width:50%; height:auto;"/>
+                </div>
+                <div class="option" onclick="showPolicies('celular')">
+                     <img src="/aplicativo-movel.png" style="width:50%; height:auto;"/>
+                    </div>
+            `;
+        }
+
+        function showPolicies(type) {
+            var policiesDiv = document.getElementById('policies');
+            policiesDiv.style.display = 'flex';
+            policiesDiv.innerHTML = '';
+
+            if (type === 'carro') {
+                policiesDiv.innerHTML = `
+                    <div class="policy" onclick="simulateAccident('carro', 1)">
+                        <h3>Apólice 1</h3>
+                        <p>Vigência: 12 meses<br>
+                        Marca: HYUNDAI<br>
+                        Modelo: HB20<br>
+                        Ano: 2018<br>
+                        Placa: CAT1F03<br><br>
+                        Prêmio da cobertura: R$10.800,00<br>
+                        Dados do pagamento: 12x de R$900,00<br><br>
+                        <strong>Cobertura:</strong><br>
+                        Colisão (Perda total): Indenização do valor total do carro R$50.000,00<br>
+                        Roubo / furto: Indenização de 75% do valor do carro R$37.500,00<br>
+                        Danos materiais a terceiros: Franquia de R$3.000,00 Indenização de até R$8.000,00<br>
+                        Danos corporais a terceiros: Franquia de R$800,00 Indenização de até R$3.000,00<br>
+                        Colisão (vale pra qualquer batida e dano no motor): Franquia de R$2.000,00 Indenização de até R$4.500,00<br>
+                        Reparo simples: Franquia de R$1.000,00 Indenização de até R$3.000,00<br>
+                        Troca de pneus: Troca de até 3 pneus<br><br>
+                        Assistência 24h: Guincho, Carro reserva</p>
+                    </div>
+                    <div class="policy" onclick="simulateAccident('carro', 2)">
+                        <h3>Apólice 2</h3>
+                        <p>Vigência: 12 meses<br>
+                        Marca: HYUNDAI<br>
+                        Modelo: HB20<br>
+                        Ano: 2018<br>
+                        Placa: CAT1F03<br><br>
+                        Prêmio da cobertura: R$5.400,00<br>
+                        Dados do pagamento: 12x de R$450,00<br><br>
+                        <strong>Cobertura:</strong><br>
+                        Colisão (Perda total): Indenização de 25% do valor do carro R$12.500,00<br>
+                        Roubo / furto: Indenização de 50% do valor do carro R$25.000,00<br>
+                        Colisão (vale pra qualquer batida e dano no motor): Franquia de R$1.000,00 Indenização de até R$2.500,00<br>
+                        Reparo simples: Franquia de R$800,00 Indenização de até R$1.500,00<br>
+                        Troca de pneus: Troca de até 2 pneus<br><br>
+                        Assistência 24h: Guincho</p>
+                    </div>
+                    <div class="policy" onclick="simulateAccident('carro', 3)">
+                        <h3>Apólice 3</h3>
+                        <p>Vigência: 12 meses<br>
+                        Marca: HYUNDAI<br>
+                        Modelo: HB20<br>
+                        Ano: 2018<br>
+                        Placa: CAT1F03<br><br>
+                        Prêmio da cobertura: R$7.350,00<br>
+                        Dados do pagamento: 12x de R$612,50<br><br>
+                        <strong>Cobertura:</strong><br>
+                        Colisão (Perda total): Indenização de 75% do valor total do carro R$37.500,00<br>
+                        Roubo / furto: Indenização de 50% do valor do carro R$25.000,00<br>
+                        Danos materiais a terceiros: Franquia de R$2.000,00 Indenização de até R$6.000,00<br>
+                        Colisão (vale pra qualquer batida e dano no motor): Franquia de R$1.500,00 Indenização de até R$3.500,00<br>
+                        Reparo simples: Franquia de R$1.000,00 Indenização de até R$2.500,00<br>
+                        Troca de pneus: Troca de até 2 pneus<br><br>
+                        Assistência 24h: Guincho, Carro reserva</p>
+                    </div>
+                `;
+            } else if (type === 'casa') {
+                policiesDiv.innerHTML = `
+                    <div class="policy" onclick="simulateAccident('casa', 1)">
+                        <h3>Apólice 1</h3>
+                        <p><strong>Apartamento</strong><br>
+                        Cidade: Recife<br>
+                        Bairro: Boa Viagem<br><br>
+                        Vigência: 12 meses<br>
+                        Prêmio total: R$4.200<br>
+                        Dados do pagamento: 12x de R$350<br><br>
+                        <strong>Cobertura:</strong><br>
+                        Danos físicos: Cobertura para incêndio, inundação, raios, explosões, vendavais e queda de aeronave<br>
+                        Valor máximo de indenização: R$550.000<br><br>
+                        Danos elétricos: Cobertura para danos causados por curto-circuito, sobretensão, variação de energia, entre outros problemas elétricos.<br>
+                        Valor máximo de indenização: R$15.000<br>
+                        Franquia: R$500<br><br>
+                        Roubo e furto: Cobertura para bens pessoais dentro da residência.<br>
+                        Valor máximo de indenização: R$50.000<br><br>
+                        Responsabilidade civil e familiar: Cobertura para danos a terceiros ocorridos dentro da propriedade.<br>
+                        Valor máximo de indenização: R$100.000<br><br>
+                        Perda ou dano de conteúdo: Cobertura para móveis, eletrodomésticos, roupas e outros pertences pessoais.<br>
+                        Valor máximo de indenização: R$50.000<br>
+                        Franquia: R$500<br><br>
+                        <strong>Exclusões:</strong> Danos causados por desgaste natural, má conservação ou negligência do segurado.<br>
+                        <strong>Assistência adicional:</strong> Encanador e eletricista para reparos emergenciais</p>
+                    </div>
+                    <div class="policy" onclick="simulateAccident('casa', 2)">
+                        <h3>Apólice 2</h3>
+                        <p><strong>Apartamento</strong><br>
+                        Cidade: Recife<br>
+                        Bairro: Boa Viagem<br><br>
+                        Vigência: 12 meses<br>
+                        Prêmio total: R$3.840<br>
+                        Dados do pagamento: 12x de R$320<br><br>
+                        <strong>Cobertura:</strong><br>
+                        Danos físicos: Cobertura para incêndio, inundação, raios e explosões<br>
+                        Valor máximo de indenização: R$500.000<br><br>
+                        Danos elétricos: Cobertura para danos causados por curto-circuito e sobretensão<br>
+                        Valor máximo de indenização: R$10.000<br>
+                        Franquia: R$400<br><br>
+                        Roubo e furto: Cobertura para bens pessoais dentro da residência<br>
+                        Valor máximo de indenização: R$45.000<br>
+                        Franquia: R$250<br><br>
+                        Responsabilidade civil e familiar: Cobertura para danos a terceiros ocorridos dentro da propriedade<br>
+                        Valor máximo de indenização: R$80.000<br><br>
+                        Perda ou dano de conteúdo: Cobertura para móveis, eletrodomésticos e roupas<br>
+                        Valor máximo de indenização: R$45.000<br>
+                        Franquia: R$250<br><br>
+                        Cobertura para vidros: Cobertura para quebra de vidros e espelhos dentro do apartamento<br>
+                        Valor máximo de indenização: R$5.000<br><br>
+                        <strong>Exclusões:</strong> Danos causados por atos intencionais do segurado, uso indevido dos bens segurados e falta de pagamento das prestações do seguro</p>
+                    </div>
+                    <div class="policy" onclick="simulateAccident('casa', 3)">
+                        <h3>Apólice 3</h3>
+                        <p><strong>Apartamento</strong><br>
+                        Cidade: Recife<br>
+                        Bairro: Boa Viagem<br><br>
+                        Vigência: 12 meses<br>
+                        Prêmio total: R$4.500<br>
+                        Dados do pagamento: 12x de R$375<br><br>
+                        <strong>Cobertura:</strong><br>
+                        Danos físicos: Cobertura para incêndio, inundação, raios, explosões, vendavais e terremotos<br>
+                        Valor máximo de indenização: R$600.000<br><br>
+                        Danos elétricos: Cobertura para danos causados por curto-circuito, sobretensão, variação de energia, e problemas elétricos<br>
+                        Valor máximo de indenização: R$20.000<br><br>
+                        Roubo e furto: Cobertura para bens pessoais dentro da residência<br>
+                        Valor máximo de indenização: R$90.000<br>
+                        Franquia: R$1.000<br><br>
+                        Responsabilidade civil e familiar: Cobertura para danos a terceiros ocorridos dentro da propriedade<br>
+                        Valor máximo de indenização: R$100.000<br><br>
+                        Perda ou dano de conteúdo: Cobertura para móveis, eletrodomésticos, roupas, joias e outros pertences pessoais<br>
+                        Valor máximo de indenização: R$55.000<br>
+                        Franquia: R$350<br><br>
+                        Cobertura para acidentes domésticos: Cobertura para danos causados por acidentes domésticos, como quedas de objetos pesados<br>
+                        Valor máximo de indenização: R$30.000<br>
+                        Franquia: R$500<br><br>
+                        <strong>Exclusões:</strong> Danos causados por negligência intencional do segurado<br>
+                        <strong>Assistência 24h:</strong> Serviço de atendimento ao cliente disponível 24h para atender emergências relacionadas à residência, como vazamentos e problemas elétricos</p>
+                    </div>
+                `;
+            } else if (type === 'celular') {
+                policiesDiv.innerHTML = `
+                    <div class="policy" onclick="simulateAccident('celular', 1)">
+                        <h3>Apólice 1</h3>
+                        <p>Celular: iPhone 13<br>
+                        Valor do Celular: R$6.000,00<br><br>
+                        <strong>Coberturas Incluídas:</strong><br>
+                        Roubo, Furto ou Perda: Cobertura: 90% do valor do celular (R$5.400,00)<br>
+                        Danos ao Celular: Cobertura: 50% do valor do celular (R$3.000,00)<br>
+                        Quebra de Tela: Cobertura: 40% do valor do celular (R$2.400,00)<br>
+                        Queima de Display: Cobertura: 30% do valor do celular (R$1.800,00)<br>
+                        Franquia: R$300,00 por sinistro</p>
+                    </div>
+                    <div class="policy" onclick="simulateAccident('celular', 2)">
+                        <h3>Apólice 2</h3>
+                        <p>Celular: iPhone 13<br>
+                        Valor do Celular: R$6.000,00<br><br>
+                        <strong>Coberturas Incluídas:</strong><br>
+                        Roubo, Furto ou Perda: Cobertura: 75% do valor do celular (R$4.500,00)<br>
+                        Danos ao Celular: Cobertura: 70% do valor do celular (R$4.200,00)<br>
+                        Quebra de Tela: Cobertura: 50% do valor do celular (R$3.000,00)<br>
+                        Queima de Display: Cobertura: 35% do valor do celular (R$2.100,00)<br>
+                        Franquia: R$500,00 por sinistro</p>
+                    </div>
+                    <div class="policy" onclick="simulateAccident('celular', 3)">
+                        <h3>Apólice 3</h3>
+                        <p>Celular: iPhone 13<br>
+                        Valor do Celular: R$6.000,00<br><br>
+                        <strong>Coberturas Incluídas:</strong><br>
+                        Roubo, Furto ou Perda: Cobertura: 80% do valor do celular (R$4.800,00)<br>
+                        Danos ao Celular: Cobertura: 55% do valor do celular (R$3.300,00)<br>
+                        Quebra de Tela: Cobertura: 60% do valor do celular (R$3.600,00)<br>
+                        Queima de Display: Cobertura: 45% do valor do celular (R$2.700,00)<br>
+                        Franquia: R$400,00 por sinistro</p>
+                    </div>
+                `;
+            }
+        }
+
+        function simulateAccident(type, policy) {
+            selectedType = type;
+            selectedPolicy = policy;
+
+            var accidents = ["dano parcial", "dano total", "furto"];
+            randomAccident = accidents[Math.floor(Math.random() * accidents.length)];
+
+            document.getElementById('initialModal').style.display = 'block';
+        }
+
+        function showResult() {
+            var resultText = "";
+            var ganho = 0;
+
+            if (selectedType === "carro") {
+                if (randomAccident === "dano parcial") {
+                    if (selectedPolicy === 1) ganho = 5200;
+                    else if (selectedPolicy === 2) ganho = 100;
+                    else if (selectedPolicy === 3) ganho = 8200;
+                } else if (randomAccident === "dano total") {
+                    if (selectedPolicy === 1) ganho = 50000;
+                    else if (selectedPolicy === 2) ganho = 12500;
+                    else if (selectedPolicy === 3) ganho = 37500;
+                } else if (randomAccident === "furto") {
+                    if (selectedPolicy === 1) ganho = 37500;
+                    else if (selectedPolicy === 2) ganho = 25000;
+                    else if (selectedPolicy === 3) ganho = 25000;
+                }
+            } else if (selectedType === "celular") {
+                if (randomAccident === "dano parcial") {
+                    if (selectedPolicy === 1) ganho = 1500;
+                    else if (selectedPolicy === 2) ganho = 1750;
+                    else if (selectedPolicy === 3) ganho = 2250;
+                } else if (randomAccident === "dano total") {
+                    if (selectedPolicy === 1) ganho = 5000;
+                    else if (selectedPolicy === 2) ganho = 4000;
+                    else if (selectedPolicy === 3) ganho = 4500;
+                } else if (randomAccident === "furto") {
+                    if (selectedPolicy === 1) ganho = 4500;
+                    else if (selectedPolicy === 2) ganho = 3750;
+                    else if (selectedPolicy === 3) ganho = 4000;
+                }
+            } else if (selectedType === "casa") {
+                if (randomAccident === "dano parcial") {
+                    if (selectedPolicy === 1) ganho = 319500;
+                    else if (selectedPolicy === 2) ganho = 319750;
+                    else if (selectedPolicy === 3) ganho = 319650;
+                } else if (randomAccident === "dano total") {
+                    if (selectedPolicy === 1) ganho = 550000;
+                    else if (selectedPolicy === 2) ganho = 500000;
+                    else if (selectedPolicy === 3) ganho = 600000;
+                } else if (randomAccident === "furto") {
+                    if (selectedPolicy === 1) ganho = 41000;
+                    else if (selectedPolicy === 2) ganho = 40750;
+                    else if (selectedPolicy === 3) ganho = 40000;
+                }
+            }
+
+            resultText = `Seu bem sofreu um ${randomAccident} e você ganhou ${ganho.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}.`;
+
+            document.getElementById('resultText').innerText = resultText;
+            document.getElementById('initialModal').style.display = 'none';
+            document.getElementById('resultModal').style.display = 'block';
+        }
+
+        function closeInitialModal() {
+            document.getElementById('initialModal').style.display = 'none';
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+        
+    </script>
+    <p class="insta">Segue a gente no instagram: <a href="https://www.instagram.com/dacat.ufpe?igsh=aWpzdXZ4NDBsZm1r">@dacat.ufpe</a></p>
+</body>
+</html>
