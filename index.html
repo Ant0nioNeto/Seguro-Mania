@@ -14,13 +14,13 @@
             background-repeat: no-repeat;
             background-size: cover;
             z-index: -1;
-            background-position: center center;
+            background-position: center;
         }
         @media (max-width: 600px) {
         .facet_sidebar {
         display: none;
         }
-    }
+        }
 
         .container {
             text-align: center;
@@ -29,9 +29,16 @@
         h1{
             color: #efeef4;
             background: rgba(0, 123, 255, 0.5);
-            border-radius: 0.5em;
+            border-radius: 5px; 
+            width: 90%;
+            max-width: 600px;
         
         } 
+        .Bem-vindo{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
         h2 {
             color: #333;
         }
@@ -136,8 +143,11 @@
         }
         .insta{
             position: absolute;
-            left: 500px;
-            bottom: auto;
+            
+            width: 100%;
+            text-align: center;
+            background-color: rgb(14, 14, 14);
+            margin-top: 60vh;
             color: #efeef4;
         }
         
@@ -156,7 +166,7 @@
         
     </body>
     <img class="logo" src="./logo.png" alt="logo">
-        <h1>Bem-vindo ao Seguro Mania!</h1>
+       <div class="Bem-vindo"><h1>Bem-vindo ao Seguro Mania!</h1></div> 
         <div>
             <label for="nameInput">Por favor, insira seu nome:</label>
             <input type="text" id="nameInput">
