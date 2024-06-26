@@ -149,34 +149,58 @@
             margin-top: 60vh;
             color: #efeef4;
         }
-        .abertura{
-            height: 40vh;
+        .abertura img{
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
         }
-        
+
+        .abertura {
+            @media (max-width: 1200px) {
+                display: none;
+            }
+        }
+        .content {
+            @media (max-width: 1200px) {
+                width: 100%;
+                flex-direction: column;
+                justify-items: center;
+                align-items: center;
+            }
+        }
+        .panel {
+            @media (max-width: 1200px) {
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+            }
+        }
         
     </style>
     <link rel="shortcut icon" type="image/jpg" href="./favicon.png"/>
 </head>
-<body>
-     <div class="container">
-        <body 
-            style="
-            background-color: #c8dde2;
-            color: #044051
-            "
-        >
-        
-    </body>
-    <img class="logo" src="./logo.png" alt="logo">
-       <div class="Bem-vindo"><h1>Bem-vindo ao Seguro Mania!</h1></div> 
-       <div class="abertura"><img src="./fundo.jpg" alt="abertura"></div>
-        <div>
-            <label for="nameInput">Por favor, insira seu nome:</label>
-            <input type="text" id="nameInput">
-            <button onclick="showRules()">Enviar</button><br><br><br>
-            <button onclick="openRulesModal()">Ver Regras!</button>
+<body style="background-color: #c8dde2; color: #044051">
+    <div class="container">        
+    <!--<img class="logo" src="./logo.png" alt="logo">-->
+    <div style="display: flex; width: 90vw; justify-content: space-between; align-items: center;">
+        <div class="content" style="display: flex; width: 90vw; justify-content: space-between; align-items: center;">
+            <div class="panel" style="width: 75%;">
+                    <div class="Bem-vindo"><h1>Bem-vindo ao Seguro Mania!</h1></div> 
+                    <label for="nameInput">Por favor, insira seu nome:</label>
+                    <input type="text" id="nameInput">
+                    <button onclick="showRules()">Enviar</button><br><br><br>
+                    <button onclick="openRulesModal()">Ver Regras!</button>
+                    <div id="policies" class="policies" style="display: none;"></div>
+            </div>
+            <div class="abertura" style="width: 21%; position: relative;"><img src="./fundo.jpg" alt="abertura"></div>
+            </div>
         </div>
-        <div id="policies" class="policies" style="display: none;"></div>
+        <div style="width: 100%; position: relative;">
+            <div style="width: 100%; position: fixed; bottom: 0; background-color: black; margin-left: -20px;">
+                Segue a gente no instagram: <a href="https://www.instagram.com/dacat.ufpe?igsh=aWpzdXZ4NDBsZm1r">@dacat.ufpe</a>
+            </div>
+        </div>
     </div>
 
     <div id="rulesModal">
@@ -504,6 +528,5 @@
         }
         
     </script>
-    <p class="insta">Segue a gente no instagram: <a href="https://www.instagram.com/dacat.ufpe?igsh=aWpzdXZ4NDBsZm1r">@dacat.ufpe</a></p>
 </body>
 </html>
