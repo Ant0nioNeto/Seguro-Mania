@@ -534,7 +534,7 @@
                 }
             }
 
-            resultText = `Seu bem sofreu um ${randomAccident} e você ganhou ${ganho.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}.`;
+            resultText = `Seu bem sofreu um ${randomAccident} e você foi indenizado em ${ganho.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}.`;
 
             document.getElementById('resultText').innerText = resultText;
             document.getElementById('initialModal').style.display = 'none';
